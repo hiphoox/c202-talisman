@@ -14,3 +14,42 @@ defmodule Lexer do
         {:error, "Token no valido,revision: #{program}"}
     end
   end
+#Palabras reservadas  
+ def lex_raw_tokens(program) when program != "" do
+    {token, rest} =
+      case program do
+        "{" <> rest ->
+          {:open_brace, rest}
+
+        "}" <> rest ->
+          {:close_brace, rest}
+
+        "(" <> rest ->
+          {:open_paren, rest}
+
+        ")" <> rest ->
+          {:close_paren, rest}
+
+        ";" <> rest ->
+          {:semicolon, rest}
+
+        "return" <> rest ->
+          {:return_keyword, rest}
+
+        "int" <> rest ->
+          {:int_keyword, rest}
+
+        "main" <> rest ->
+          {:main_keyword, rest}
+
+        rest ->
+          get_constant(rest)
+      end
+
+    if token != :error do
+      remaining_tokens = lex_raw_tokens(rest)
+      [token | remaining_tokens]
+    else
+      [:error]
+    end
+  end
