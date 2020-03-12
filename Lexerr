@@ -1,0 +1,16 @@
+#Lexer , parte que se encargara de la obtencion y manejo de tokens
+#Funcion para leer letras y crear tokens
+defmodule Lexer do
+  def scan_words(words) do
+    Enum.flat_map(words, &lex_raw_tokens/1)
+  end
+#Funcion de lectura de consantes 
+    def get_constant(program) do
+    case Regex.run(~r/^\d+/, program) do
+      [value] ->
+        {{:constant, String.to_integer(value)}, String.trim_leading(program, value)}
+
+      program ->
+        {:error, "Token no valido,revision: #{program}"}
+    end
+  end
