@@ -1,0 +1,16 @@
+defmodule Parser do
+  def parse_program(token_list) do
+    function = parse_function(token_list)
+
+    case function do
+      {{:error, error_message}, _rest} ->
+        {:error, error_message}
+
+      {function_node, rest} ->
+        if rest == [] do
+          %AST{node_name: :program, left_node: function_node}
+        else
+          {:error, "Se encontraron elementos despues del final de la funcion"}
+        end
+    end
+  end
