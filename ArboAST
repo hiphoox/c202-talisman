@@ -1,4 +1,4 @@
-//Creacion del arbol AST
+//Creacion del arbol AST a modo atributos de este
 defmodule AST do
   defstruct [:node_name, :value, :left_node, :right_node]
 en
