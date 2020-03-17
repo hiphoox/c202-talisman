@@ -10,7 +10,7 @@ defmodule Parser do
         if rest == [] do
           %AST{node_name: :program, left_node: function_node}
         else
-          {:error, "Error: there are more elements after function end"}
+          {:error, "Error: hay mas elementos despues de la funcion end"}
         end
     end
   end
@@ -39,23 +39,23 @@ defmodule Parser do
                   if next_token == :close_brace do
                     {%AST{node_name: :function, value: :main, left_node: statement_node}, rest}
                   else
-                    {{:error, "Error,Llave de cierre faltante"}, rest}
+                    {{:error, "Error: llave de cierre faltante"}, rest}
                   end
               end
             else
-              {:error, "Error: Llave abierta sin cierre"}
+              {:error, "Error: llave abierta sin cierre"}
             end
           else
-            {:error, "Error:Parentesisi de abertura perdido"}
+            {:error, "Error: parentesis de abertura perdido"}
           end
         else
-          {:error, "Error: Parentesisi de cierre  perdido"}
+          {:error, "Error: parentesis de cierre  perdido"}
         end
       else
-        {:error, "Error: Funcion main no encontrada"}
+        {:error, "Error: funcion main no encontrada"}
       end
     else
-      {:error, "Error, regresaste un tipo de valor no valido"}
+      {:error, "Error: regresaste un tipo de valor no valido"}
     end
   end
 
@@ -75,14 +75,14 @@ defmodule Parser do
           end
       end
     else
-      {{:error, "Error: No se encontre return key"}, rest}
+      {{:error, "Error: no se encontro un return key"}, rest}
     end
   end
 
   def parse_expression([next_token | rest]) do
     case next_token do
       {:constant, value} -> {%AST{node_name: :constant, value: value}, rest}
-      _ -> {{:error, "Error: Constante perdida"}, rest}
+      _ -> {{:error, "Error: constante perdida"}, rest}
     end
   end
 end

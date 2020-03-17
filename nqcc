@@ -42,7 +42,7 @@ defmodule Nqcc do
   defp print_help_message do
     IO.puts("\nnqcc --help file_name \n")
 
-    IO.puts("\nThe compiler supports following options:\n")
+    IO.puts("\nEl compilador soporta las siguientes opciones:\n")
 
     @commands
     |> Enum.map(fn {command, description} -> IO.puts("  #{command} - #{description}") end)

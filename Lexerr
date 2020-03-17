@@ -12,7 +12,7 @@ defmodule Lexer do
         {{:constant, String.to_integer(value)}, String.trim_leading(program, value)}
 
       program ->
-        {:error, "Token no valido,revision: #{program}"}
+        {:error, "Token no valido, revision: #{program}"}
     end
   end
 
