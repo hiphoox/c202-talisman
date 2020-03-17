@@ -5,4 +5,5 @@
  * Elixir
 
 # Use
- * /b Clone this repository
+ * Clone the repository
+ 
