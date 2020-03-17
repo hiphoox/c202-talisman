@@ -6,4 +6,5 @@
 
 # Use
  * Clone the repository
- 
+ git clone https://github.com/hiphoox/c202-talisman
+ cd c202-talisman
