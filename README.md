@@ -3,3 +3,6 @@
  
  # Requirements
  * Elixir
+
+# Use
+ * /b Clone this repository
