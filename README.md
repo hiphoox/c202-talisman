@@ -1,5 +1,5 @@
 # c202-talisman
- This is the repository project for the Talisman C compiler made in Elixir by the Talisman team
+ This is the repository for the Talisman C compiler project made in Elixir by the Talisman team
  
  # Requirements
  * Elixir
@@ -18,3 +18,5 @@ cd c202-talisman
 * Horacio Acosta -Developer-
 * Alan Sánchez -Tester-
 
+## Docs
+[Requirements and schedule](./docs/General.pdf)
