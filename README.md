@@ -10,3 +10,6 @@
 git clone https://github.com/hiphoox/c202-talisman
 cd c202-talisman
 ```
+
+## Built with 🛠️
+[Elixir](https://elixir-lang.org/) main language of the compiler
