@@ -12,4 +12,9 @@ cd c202-talisman
 ```
 
 ## Built with 🛠️
-[Elixir](https://elixir-lang.org/) main language of the compiler
+* [Elixir](https://elixir-lang.org/) main language of the compiler
+
+## Creators ✒️
+* Horacio Acosta -Developer-
+* Alan Sánchez -Tester-
+
