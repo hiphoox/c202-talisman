@@ -1,7 +1,7 @@
 # c202-talisman
  This is the repository for the Talisman C compiler project made in Elixir by the Talisman team
  
- # Requirements
+# Requirements
  * Elixir
 
 # Use
@@ -19,4 +19,4 @@ cd c202-talisman
 * Alan Sánchez -Tester-
 
 ## Docs
-[Requirements and schedule](./docs/General.pdf)
+[General documentation of the project](./docs/Documentation.pdf)
