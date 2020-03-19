@@ -1,50 +1,33 @@
 defmodule Nqcc do
-  @moduledoc """
-  Documentation for Nqcc.
-  """
-  @commands %{
-    "help" => "Prints this help"
-  }
+  def main(opc) do
+    case opc do
+      # For example [escript xenon -switch "namefile.c"]
+      # help
+      ["-h"] -> IO.puts("Opciones disponibles:\n
+      -lt [filename.c]  Show token list.
+      -as [filename.c]  Show AST.
+      -w [filename.c]  Compile program . ")
 
-  def main(args) do
-    args
-    |> parse_args
-    |> process_args
-  end
+      # Token list
+      ["-lt", path] ->
+            IO.puts("Token List: \n\n\n\n")
+            IO.inspect(Lexer.lexing(File.read!(path)))
 
-  def parse_args(args) do
-    OptionParser.parse(args, switches: [help: :boolean])
-  end
+      # Impresion ast
+      ["-as", path] ->
+        IO.puts("Arbol AST correspondiente:\n\n")
+        tokens = Lexer.lexing(File.read!(path))
+        ast = Parser.parse_program(tokens)
+        IO.inspect(ast)
 
-  defp process_args({[help: true], _, _}) do
-    print_help_message()
-  end
+      # Full compile
+      ["-c", path] ->
+        IO.puts("Compiling the file: " <> path)
+        tokens = Lexer.lexing(File.read!(path))
+        ast = Parser.parse_program(tokens)
+        assemblyCode = CodeGenerator.generate_code(ast)
+        Linker.generate_binary(assemblyCode, path)
 
-  defp process_args({_, [file_name], _}) do
-    compile_file(file_name)
-  end
-
-  defp compile_file(file_path) do
-    IO.puts("Compilando archivo: " <> file_path)
-    assembly_path = String.replace_trailing(file_path, ".c", ".s")
-
-    File.read!(file_path)
-    |> Sanitizer.sanitize_source()
-    |> IO.inspect(label: "\nSanitizer ouput")
-    |> Lexer.scan_words()
-    |> IO.inspect(label: "\nLexer ouput")
-    |> Parser.parse_program()
-    |> IO.inspect(label: "\nParser ouput")
-    |> CodeGenerator.generate_code()
-    |> Linker.generate_binary(assembly_path)
-  end
-
-  defp print_help_message do
-    IO.puts("\nnqcc --help file_name \n")
-
-    IO.puts("\nEl compilador soporta las siguientes opciones:\n")
-
-    @commands
-    |> Enum.map(fn {command, description} -> IO.puts("  #{command} - #{description}") end)
+    end
   end
 end
