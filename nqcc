@@ -1,12 +1,11 @@
 defmodule Nqcc do
   def main(opc) do
     case opc do
-      # For example [escript xenon -switch "namefile.c"]
-      # help
       ["-h"] -> IO.puts("Opciones disponibles:\n
-      -lt [filename.c]  Show token list.
-      -as [filename.c]  Show AST.
-      -w [filename.c]  Compile program . ")
+      -w [filename.c]  Compile program .
+      -l [filename.c]  Show token list.
+      -a [filename.c]  Show AST.
+       ")
 
       # Token list
       ["-lt", path] ->
