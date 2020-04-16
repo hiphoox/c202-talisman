@@ -1,48 +1,89 @@
-defmodule CodeGenerator do
-  def generate_code(ast) do
-    code = post_order(ast)
-    IO.puts("\nSalida de Generador de codigo:")
-    IO.puts(code)
-    code
+defmodule Generador_c do
+
+  def codigo_generador(ast) do
+    codigo = post_order(ast, "")
+    IO.puts("\n--------------------\n")
+    IO.puts(" Se realiza una generacion de codigo:")
+    IO.puts("\n--------------------\n")
+    IO.puts(codigo)
+    codigo
   end
 
-  def post_order(node) do
+  def post_order(node, codigo) do
     case node do
       nil ->
-        nil
+        ""
 
       ast_node ->
-        code_snippet = post_order(ast_node.left_node)
-        # TODO: Falta terminar de implementar cuando el arbol tiene mas ramas
-        post_order(ast_node.right_node)
-        emit_code(ast_node.node_name, code_snippet, ast_node.value)
+        if ast_node.node_name == :constante do 
+          entregar_codigo(:constante, codigo, ast_node.value)
+        else
+          code_snippet = 
+            post_order(ast_node.left_node, codigo) 
+            <> post_order(ast_node.right_node, codigo) 
+          entregar_codigo(ast_node.node_name, code_snippet, ast_node.value)
+        end
     end
   end
 
-  def emit_code(:program, code_snippet, _) do
+  def entregar_codigo(:program, code_snippet, _) do
     """
-        .section        __TEXT,__text,regular,pure_instructions
-        .p2align        4, 0x90
-    """ <>
-      code_snippet
+      .file "codigo.c"
+      .text
+      .p2align 4
+    """ <> code_snippet
   end
 
-  def emit_code(:function, code_snippet, :main) do
+ 
+  def entregar_codigo(:funcion, code_snippet, :main) do
     """
-        .globl  _main         ## -- Begin function main
-    _main:                    ## @main
-    """ <>
-      code_snippet
+      .globl  main
+
+      main:                  
+    """ <> code_snippet
   end
 
-  def emit_code(:return, code_snippet, _) do
+ 
+  def entregar_codigo(:return, code_snippet, _) do
+    code_snippet <>
     """
-        movl    #{code_snippet}, %eax
-        ret
+      ret
     """
   end
 
-  def emit_code(:constant, _code_snippet, value) do
-    "$#{value}"
+
+  def entregar_codigo(:constante, _code_snippet, value) do
+    """
+         mov  $#{value}, %rax
+    """
   end
+
+
+  def entregar_codigo(:negacion, code_snippet, _) do
+    code_snippet <>
+    """ 
+      neg %rax
+    """
+  end
+
+
+  def entregar_codigo(:complemento, code_snippet, _) do
+    code_snippet <>
+    """
+      not %rax
+    """
+  end
+
+
+  def entregar_codigo(:negacion_logica, code_snippet, _) do
+    code_snippet <>
+    """
+      cmp $0, %rax
+      mov $0, %rax
+      sete %al
+    """
+  end
+
+
+
 end
