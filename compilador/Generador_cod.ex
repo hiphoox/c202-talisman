@@ -3,7 +3,7 @@ defmodule Generador_c do
   def codigo_generador(ast) do
     codigo = post_order(ast, "")
     IO.puts("\n--------------------\n")
-    IO.puts(" Se realiza una generacion de codigo:")
+    IO.puts(" Generacion de codigo:")
     IO.puts("\n--------------------\n")
     IO.puts(codigo)
     codigo
