@@ -89,6 +89,12 @@ defmodule Generador_c do
     """
   end
   
+ def entregar_codigo(:resta, code_snippet, _) do
+    code_snippet<> 
+    """
+      sub     %rax, %rbx
+     """
+  end
 
 
 end
