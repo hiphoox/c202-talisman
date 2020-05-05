@@ -93,6 +93,7 @@ defmodule Generador_c do
     code_snippet<> 
     """
       sub     %rax, %rbx
+      mov     %rbx, %rax
      """
   end
 
