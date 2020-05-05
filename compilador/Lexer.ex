@@ -37,6 +37,9 @@ defmodule Lexer do
 	
         "!=" <> ts ->
           {:diferente_de, ts}
+	 
+	 "+" <> t_sobrantes ->
+          {:suma, t_sobrantes}
 
         _ -> 
           case Regex.run(~r/^\d+/, lista) do
