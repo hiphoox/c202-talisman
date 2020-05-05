@@ -85,10 +85,10 @@ defmodule Generador_c do
   def entregar_codigo(:suma, code_snippet, _) do
     code_snippet<>
     """
-      add 
+      add %rbx, %rax
     """
   end
-
+  
 
 
 end
