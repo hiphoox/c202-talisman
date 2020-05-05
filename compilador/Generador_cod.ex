@@ -96,6 +96,12 @@ defmodule Generador_c do
       mov     %rbx, %rax
      """
   end
+   def entregar_codigo(:multiplicacion, code_snippet, _) do
+    code_snippet<>
+    """
+      imul %rbx, %rax;
+    """
+  end
 
 
 end
