@@ -38,7 +38,6 @@ defmodule Generador_c do
   def entregar_codigo(:funcion, code_snippet, :main) do
     """
       .globl  main
-
       main:                  
     """ <> code_snippet
   end
@@ -81,6 +80,12 @@ defmodule Generador_c do
       cmp $0, %rax
       mov $0, %rax
       sete %al
+    """
+  end
+  def entregar_codigo(:suma, code_snippet, _) do
+    code_snippet<>
+    """
+      add 
     """
   end
 
