@@ -23,7 +23,6 @@ defmodule Lexer do
 
         "(" <> ts ->
           {:abre_paren, ts}
-
         ")" <> ts ->
           {:cierra_paren, ts}
 
