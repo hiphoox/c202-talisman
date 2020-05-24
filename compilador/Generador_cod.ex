@@ -102,6 +102,17 @@ defmodule Generador_c do
       imul %rbx, %rax;
     """
   end
+  
+  def entregar_codigo(:division, code_snippet, _) do
+    code_snippet<>
+    """
+      push     %rax
+      mov      %rbx, %rax
+      popq     %rbx
+      cqo
+      idivq    %rbx
+    """
+  end
 
 
 end
