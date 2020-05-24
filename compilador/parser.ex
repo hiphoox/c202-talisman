@@ -226,41 +226,4 @@ defmodule Parser do
          {_num, token} = tupla_siguiente 
          token
     end 
-  end
 
-  def operador_Binario(siguiente,factor,next_factor) do 
-
-    union  = %AST{node_name: siguiente, left_node: factor, right_node: next_factor}
-    #union = "[OP : #{siguiente} FL :#{factor} Fr#{next_factor}]"
-    union
-    #IO.inspect(union) #solo lo imprimos
-  end
-
-  ####
-  def  while_aditive_exp(rest, termino, next) when  next != :suma and next !=:negacion do 
-    {termino, rest} #solo devolvemos la lista 
-  end 
-
-  def while_aditive_exp(rest,termino,_next) do 
-      [tupla_siguiente | rest ] = rest ##sacamos el operador 
-      {_num , token}= tupla_siguiente
-      ##Convert to operador (lo sasamos)
-      op  = get_operador_binario(token)
-      {op, _algo}  = op
-      next_term = parse_term(rest)
-      {next_termino,rest} = next_term
-      term = operador_Binario(op,termino,next_termino)
-      next = peek_tokens(rest)
-      while_aditive_exp(rest,term,next)
-  end 
-
-  def additive_exp(tokens) do
-    #IO.inspect("ENtramos")
-    datos_term = parse_term(tokens)
-    {termino,rest}  = datos_term  
-    next =  peek_tokens(rest) ##el que sigue 
-    resultado = while_aditive_exp(rest,termino, next)
-    resultado
-    #IO.inspect(resultado, label: "RES analizador_expresion")
-  end 
-end 
