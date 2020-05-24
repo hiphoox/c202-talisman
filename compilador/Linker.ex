@@ -7,9 +7,6 @@ defmodule Linker do
     assembly_path = output_dir_name <> "/" <> assembly_file_name
     File.write!(assembly_path, assembler)
     System.cmd("gcc", [binary_file_name <> ".c", "-o#{binary_file_name}"], cd: output_dir_name)
-    IO.puts("Assembly code Generated : #{assembly_path}")
-    IO.puts("Exectutable generated: #{output_dir_name}" <> "/" <> "#{binary_file_name}")
-    # File.rm!(assembly_path)
   end
 
 end
