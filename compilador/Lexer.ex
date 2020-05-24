@@ -41,6 +41,12 @@ defmodule Lexer do
 	 "+" <> t_sobrantes ->
           {:suma, t_sobrantes}
 
+        "*" <> t_sobrantes ->
+          {:multiplicacion, t_sobrantes}
+
+        "/" <> t_sobrantes ->
+          {:division, t_sobrantes}
+
         _ -> 
           case Regex.run(~r/^\d+/, lista) do
             [value] -> {{:constante, String.to_integer(value)}, String.trim_leading(lista, value)}
