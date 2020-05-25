@@ -58,5 +58,24 @@ def funcion_parser([tupla_siguiente | rest]) do
       end
   end
   
+  #Parse expression
+  def  while_exp(rest, termino, next) when  next !=:o_logico  do 
+    {termino, rest} #solo devolvemos la lista 
+  end 
+
+  def while_exp(rest,termino,_next) do 
+    [tupla_siguiente | rest ] = rest ##sacamos el operador 
+    {_num , token}= tupla_siguiente
+    ##Convert to operador (lo sasamos)
+    op  = get_operador_binario(token)
+    {op, _algo} = op
+    next_term = logical_andexp(rest)
+    {next_termino,rest} = next_term
+    term = operador_Binario(op,termino,next_termino)
+    next = peek_tokens(rest)
+    while_exp(rest,term,next)
+  end 
+  
+  
   
 
