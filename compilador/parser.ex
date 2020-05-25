@@ -1,14 +1,3 @@
-# Salidas de Lexer
-# int -> :pclave_int
-# main -> :pclave_main
-# ( -> :abre_paren
-# ) -> :cierra_paren
-# { -> :abre_llave
-# return -> :pclave_return
-# ; -> :puntoycoma
-# } -> cierra_llave
-# Lo restante debe ser constante
-
 defmodule Parser do
 
   def programa_parser(lista_tokens) when lista_tokens != [] do
