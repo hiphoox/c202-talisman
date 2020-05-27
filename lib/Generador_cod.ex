@@ -1,4 +1,4 @@
-defmodule Generador_c do
+defmodule Generador_cod do
 
   def codigo_generador(ast) do
     codigo = post_order(ast, "")
