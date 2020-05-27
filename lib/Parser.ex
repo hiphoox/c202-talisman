@@ -202,6 +202,38 @@ def funcion_parser([tupla_siguiente | rest]) do
     end
   end
 
+  #fUNCION CREADA PARA TERCER ENTREGA
+    def get_operador_binario(siguiente_token) do 
+    case siguiente_token do 
+      :suma ->
+        {:suma,:ok}
+      :negacion ->
+        {:resta,:ok}
+      :multiplicacion ->
+        {:multiplicacion,:ok}
+      :division ->
+        {:division,:ok}
+      :o_logico ->
+        {:o_logico,:ok}
+      :menor_que ->
+         {:menor_que,:ok}
+      :mayor_que ->
+         {:mayor_que,:ok}
+      :menor_igual ->
+         {:menor_igual,:ok}
+      :mayor_igual ->
+         {:mayor_igual,:ok}
+      :diferente_de ->
+         {:diferente_de,:ok}
+      :igual_a ->
+         {:igual_a,:ok}
+      :ampersand->
+         {:ampersand,:ok}
+      _ ->
+       {{:error, "Binario no valido"}, :mal}
+    end 
+  end 
+
   def parse_factor([tupla_siguiente | rest]) do #REGRESA  {ALGO1,ALGO2}
     {_num, siguiente_token} = tupla_siguiente
 
@@ -344,37 +376,7 @@ def funcion_parser([tupla_siguiente | rest]) do
   def operador_Binario(siguiente,factor,next_factor) do 
     union  = %AST{node_name: siguiente, left_node: factor, right_node: next_factor}
   end
-#fUNCION CREADA PARA TERCER ENTREGA
-    def get_operador_binario(siguiente_token) do 
-    case siguiente_token do 
-      :suma ->
-        {:suma,:ok}
-      :negacion ->
-        {:resta,:ok}
-      :multiplicacion ->
-        {:multiplicacion,:ok}
-      :division ->
-        {:division,:ok}
-      :o_logico ->
-        {:o_logico,:ok}
-      :menor_que ->
-         {:menor_que,:ok}
-      :mayor_que ->
-         {:mayor_que,:ok}
-      :menor_igual ->
-         {:menor_igual,:ok}
-      :mayor_igual ->
-         {:mayor_igual,:ok}
-      :diferente_de ->
-         {:diferente_de,:ok}
-      :igual_a ->
-         {:igual_a,:ok}
-      :ampersand->
-         {:ampersand,:ok}
-      _ ->
-       {{:error, "Binario no valido"}, :mal}
-    end 
-  end 
+
   def  while_aditive_exp(rest, termino, next) when  next != :suma and next !=:negacion do 
     {termino, rest} #solo devolvemos la lista 
   end 

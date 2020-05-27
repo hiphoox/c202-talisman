@@ -15,6 +15,9 @@ defmodule Lexer do
         "{" <> ts ->
           {:abre_llave, ts}
 
+        ";" <> t_sobrantes ->
+          {:puntoycoma, t_sobrantes}
+
         "int " <> ts ->
           {:pclave_int, ts}
 
@@ -38,14 +41,17 @@ defmodule Lexer do
         "!=" <> ts ->
           {:diferente_de, ts}
 	 
-	 "+" <> t_sobrantes ->
-          {:suma, t_sobrantes}
+	      "+" <> ts ->
+          {:suma, ts}
 
-        "*" <> t_sobrantes ->
-          {:multiplicacion, t_sobrantes}
+        "*" <> ts ->
+          {:multiplicacion, ts}
 
-        "/" <> t_sobrantes ->
-          {:division, t_sobrantes}
+        "/" <> ts ->
+          {:division, ts}
+
+        "}" <> ts ->
+          {:cierra_llave, ts}
 
         _ -> 
           case Regex.run(~r/^\d+/, lista) do
@@ -100,5 +106,10 @@ defmodule Lexer do
     else
       :true
     end
+  end
+
+  def agrupacion([{numRenglon,cadena}]) do
+    # flat_map coloca todos los elementos en una sola lista
+    Enum.flat_map({numRenglon,cadena}, &tokens/1)
   end
 end
