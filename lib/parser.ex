@@ -36,7 +36,8 @@ def funcion_parser([tupla_siguiente | rest]) do
             {_num, siguiente_token} = tupla_siguiente
 
             if siguiente_token == :abre_llave do
-              analizador = analizador_gramatica(rest)
+                [tupla_siguiente | rest] = rest
+                {_num, siguiente_token} = tupla_siguiente
 
                   if siguiente_token == :cierra_llave do
                     {%AST{node_name: :funcion, value: :main, left_node: analizador_nodo}, rest}
@@ -78,23 +79,35 @@ def funcion_parser([tupla_siguiente | rest]) do
   
   #Parse factor
 
-
-
-
-
-
-
-
   #Parse term
+ 
+ def  while_term(rest, factor, next) when  next != :division and next !=:multiplicacion do 
+      {factor,rest} #solo devolvemos la lista 
+  end 
 
+   def while_term(rest,factor,_next) do 
+      [tupla_siguiente | rest ] = rest #  Sacamos el operador  
+      {_num,token} = tupla_siguiente
+       #IO.inspect(token)
+       #Convert to operador 
+      op = get_operador_binario(token)
+      {op, _algo}  = op
+      next_term = parse_factor(rest)
+      {next_factor,rest} = next_term
+      term = operador_Binario(op,factor,next_factor)
+      next = peek_tokens(rest)
+      while_term(rest,term,next)
+  end 
 
-
-
-
-
-
-
-
+  def parse_term(tokens) do
+    datos_factor = parse_factor(tokens) 
+    # {:error , desc} ->posible error que ven
+    {factor,rest}  = datos_factor 
+    next =  peek_tokens(rest) ##el que sigue 
+    resultado = while_term(rest,factor, next)
+    resultado
+    #IO.inspect(resultado, label: "pruebbababababasjjsasd")
+  end 
 
   #Funciones de conjuncion
 
