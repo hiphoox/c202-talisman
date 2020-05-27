@@ -6,6 +6,7 @@ defmodule TalismanCompiler.MixProject do
       app: :talisman_compiler,
       version: "0.1.0",
       elixir: "~> 1.10",
+      escript: [main_module: Menu],
       start_permanent: Mix.env() == :prod,
       deps: deps()
     ]
