@@ -9,7 +9,7 @@ defmodule Parser do
 
       {funcion_nodo, rest} ->          
         if rest == []  do
-          AST{node_name: :program, left_node: funcion_nodo}
+          %AST{node_name: :program, left_node: funcion_nodo}
         else
           {:error, "Error, Error, error"}
         end
@@ -36,8 +36,21 @@ def funcion_parser([tupla_siguiente | rest]) do
             {_num, siguiente_token} = tupla_siguiente
 
             if siguiente_token == :abre_llave do
-                [tupla_siguiente | rest] = rest
-                {_num, siguiente_token} = tupla_siguiente
+                analizador = analizador_gramatica(rest)
+
+              case analizador do
+                {{:error, _mensaje_error}, _rest} -> ##CHECAR BIEN CUANDO SE DEFINAN LOS ERRORES
+                  # Tuvo que ser cambiado por las pruebas 
+                {:error, "Linea: #{num}. Error: la funcion no devuelve nada"}
+
+                {{:error, "Error: se esparaba ;"}} ->
+                  {:error, "Linea: #{elem(tupla_siguiente,0)+1}. Error: Orden de operandos erroneos"}
+                
+                {:error, mensaje} ->
+                  {:error, mensaje}
+
+                {analizador_nodo, [tupla_siguiente | rest]} ->
+                  {_num, siguiente_token} = tupla_siguiente
 
                   if siguiente_token == :cierra_llave do
                     {%AST{node_name: :funcion, value: :main, left_node: analizador_nodo}, rest}
@@ -57,6 +70,9 @@ def funcion_parser([tupla_siguiente | rest]) do
       else
         {:error, "Error: Falta de main"}
       end
+      else
+      {:error, "Linea: #{elem(siguiente_token,0)}. Error: la funcion no devuelve nada"}
+    end
   end
   
   #Parse expression
@@ -132,7 +148,7 @@ def funcion_parser([tupla_siguiente | rest]) do
         :negacion_logica ->
           {:negacion_logica, :ok}
 
-      _ - >
+        _ ->
         {{:error, "Unario no valido"}, :mal}
     end
   end
@@ -184,3 +200,4 @@ def funcion_parser([tupla_siguiente | rest]) do
     end 
 
   end 
+end
