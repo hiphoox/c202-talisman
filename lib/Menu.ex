@@ -4,7 +4,6 @@ defmodule Menu do
     "tk" => "Imprime la lista de tokens obtenida por el Lexer",
     "ast" => "Imprime el arbol AST obtenido por el parser",
     "gc" => "Imprime el codigo ensamblador generado",
-    "o" => " Opcion de cambiar el nombre del ejecutable"
   }
 
   def main(args) do
@@ -17,15 +16,6 @@ defmodule Menu do
   #### CASOS
   def parse_args(args) do
     OptionParser.parse(args, switches: [help: :boolean, tk: :boolean, ast: :boolean, gc: :boolean, o: :boolean])
-  end
-
- 
- defp process_args({[o: true], [file_name,nombre_elegido], _}) do
-      if formato_file(file_name) == true do
-      compile_file(file_name,nombre_elegido)
-    else
-      IO.puts("Archivo no valido")
-    end 
   end
 
 
@@ -87,39 +77,6 @@ defmodule Menu do
     end
   end
 
-  #### CAMBIO DE NOMBRE DE EJECUTABLE
-
-
-  def compile_file(file_path,nombre_elegido) do
-    IO.puts("Compiling file: " <> file_path)
-    assembly_path = String.replace_trailing(file_path, ".c", ".s")
-
-    doc = File.read!(file_path)
-    depu = TalismanCompiler.depuracion(doc)
-    IO.inspect(depu,label: "\nSanitizer ouput")
-    tokens =  Lexer.lexer_principal(depu,[])
-      case tokens do 
-        {:error, _algo} ->
-          IO.inspect(tokens,label: "\nLexer ouput")
-        _->
-          IO.inspect(tokens,label: "\nLexer ouput")
-          ast = Parser.programa_parser(tokens)
-        case ast do
-          {:error, _algo} ->
-              IO.inspect(ast,label: "\nLexer ouput")
-          _->
-            IO.inspect(ast,label: "\nParser ouput")
-            gc = Generador_cod.codigo_generador(ast)
-            case gc do 
-              {:error, _algo} ->
-                  IO.inspect(gc,label: "\n\n GC generado: \n")
-              _->
-                 fin = Linker.generate_binary(gc,assembly_path,nombre_elegido)
-                 IO.inspect(fin, label: "\n RUTAS")
-            end 
-        end
-      end
-  end 
 
   ####   
 
@@ -202,12 +159,11 @@ defmodule Menu do
   #### Mensaje de help
 
   defp print_help_message do
-    IO.puts("\n BANDERAS SOPORTADAS POR EL COMPILADOR :\n")
-
-    IO.puts("\n FORMATO : ./Talisman_compiler --bandera nombre.c \n")
-    IO.puts("\n FORMATO : ./Talisman_compiler --o nombre.c nombre_elegido\n")
+    IO.puts("\n Funciones del compilador :\n")
 
     @commands
     |> Enum.map(fn {command, description} -> IO.puts("  #{command} - #{description}") end)
+
+     IO.puts("\n Ejemplo: ./talisman_compiler --opcion nombre.c \n")
   end
 end
