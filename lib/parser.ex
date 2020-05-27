@@ -74,6 +74,37 @@ def funcion_parser([tupla_siguiente | rest]) do
       {:error, "Linea: #{elem(siguiente_token,0)}. Error: la funcion no devuelve nada"}
     end
   end
+
+   def analizador_gramatica([tupla_siguiente | rest]) do
+    {num, siguiente_token} = tupla_siguiente
+
+    if siguiente_token == :pclave_return do
+      expresion = analizador_expresion(rest)
+
+      case expresion do
+        {{:error, mensaje_error}, rest} ->
+          {{:error, mensaje_error}, rest}
+
+        {:error, mensaje}->
+          {:error,mensaje}
+
+        {exp_node, lista_final} ->
+          [tupla_siguiente | rest] = lista_final
+          {_num, siguiente_token} = tupla_siguiente
+
+          # IO.inspect(lista_final, label: "Resto de regreso")
+
+          if siguiente_token == :puntoycoma do
+            {%AST{node_name: :return, left_node: exp_node}, rest}
+          else
+            {{:error, "Error: se esparaba ;"}}
+          end
+      end
+    else
+      {{:error, "Linea: #{num+1}. Error: se esperaba punto y coma."}}
+    end
+  end
+
   
   #Parse expression
   def  while_exp(rest, termino, next) when  next !=:o_logico  do 
@@ -100,6 +131,8 @@ def funcion_parser([tupla_siguiente | rest]) do
  def  while_term(rest, factor, next) when  next != :division and next !=:multiplicacion do 
       {factor,rest} #solo devolvemos la lista 
   end 
+
+  
 
    def while_term(rest,factor,_next) do 
       [tupla_siguiente | rest ] = rest #  Sacamos el operador  
