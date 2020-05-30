@@ -6,3 +6,6 @@ defmodule TalismanCompilerTest do
     assert TalismanCompiler.hello() == :world
   end
 end
+
+
+###Falta automatizar la pruebas
