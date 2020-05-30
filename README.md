@@ -25,3 +25,7 @@ mix escript.build
 ./talisman_compiler --gc examples/return_2.c
 ```
 
+## Fuente
+
+[Curso de Nora Sandler](https://norasandler.com/)
+
