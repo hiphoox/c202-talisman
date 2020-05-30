@@ -1,7 +1,6 @@
 defmodule Parser do
 #Ingreso tokens
  def programa_parser(lista_tokens) when lista_tokens != [] do
-    # IO.inspect(lista_tokens, label: "Parser")
     funcion = funcion_parser(lista_tokens)
     case funcion do
       {{:error, mensaje_error}, _rest} ->
@@ -15,6 +14,7 @@ defmodule Parser do
         end
     end
   end
+
 # Funcion tokens primera entrega
 def funcion_parser([tupla_siguiente | rest]) do
     {_num, siguiente_token} = tupla_siguiente
@@ -43,7 +43,7 @@ def funcion_parser([tupla_siguiente | rest]) do
                   # Tuvo que ser cambiado por las pruebas 
                 {:error, "Linea: #{num}. Error: la funcion no devuelve nada"}
 
-                {{:error, "Error: se esparaba ;"}} ->
+                {{:error, "Error: se esperaba ;"}} ->
                   {:error, "Linea: #{elem(tupla_siguiente,0)+1}. Error: Orden de operandos erroneos"}
                 
                 {:error, mensaje} ->
@@ -92,8 +92,6 @@ def funcion_parser([tupla_siguiente | rest]) do
           [tupla_siguiente | rest] = lista_final
           {_num, siguiente_token} = tupla_siguiente
 
-          # IO.inspect(lista_final, label: "Resto de regreso")
-
           if siguiente_token == :puntoycoma do
             {%AST{node_name: :return, left_node: exp_node}, rest}
           else
@@ -114,7 +112,7 @@ def funcion_parser([tupla_siguiente | rest]) do
   def while_exp(rest,termino,_next) do 
     [tupla_siguiente | rest ] = rest 
     {_num , token}= tupla_siguiente
-    ##Convert to operador (lo sasamos)
+    #Se convierte el token en operador
     op  = get_operador_binario(token)
     {op, _algo} = op
     next_term = parse_term(token)
@@ -123,9 +121,8 @@ def funcion_parser([tupla_siguiente | rest]) do
     next = peek_tokens(rest)
     while_exp(rest,term,next)
   end
-
+  #Funcion encontrada , para ayudar a un correcto analisis de nuestras operaciones
   def analizador_expresion(tokens) do
-    #IO.inspect("ENtramos")
     datos_term = parse_term(tokens)
     {termino,rest}  = datos_term  
     case datos_term do 
@@ -136,13 +133,12 @@ def funcion_parser([tupla_siguiente | rest]) do
         resultado = while_exp(rest,termino, next)
         resultado
     end 
-    #IO.inspect(resultado, label: "RES analizador_expresion")
   end 
 
   
   #Parse factor
 
-   def parse_factor([tupla_siguiente | rest]) do #REGRESA  {ALGO1,ALGO2}
+   def parse_factor([tupla_siguiente | rest]) do 
     {_num, siguiente_token} = tupla_siguiente
 
     case siguiente_token do
@@ -170,7 +166,7 @@ def funcion_parser([tupla_siguiente | rest]) do
         case valido do
           {tupla_mensaje, :mal} ->
             ## Se regresa a parse_statement
-            {tupla_mensaje,rest} ##no es ningun operado unario 
+            {tupla_mensaje,rest} 
 
           {name_nodo, :ok} ->
             # Buscando su constante
@@ -189,10 +185,9 @@ def funcion_parser([tupla_siguiente | rest]) do
   end 
 
    def while_term(rest,factor,_next) do 
-      [tupla_siguiente | rest ] = rest #  Sacamos el operador  
+      [tupla_siguiente | rest ] = rest #Obtenemos un operador 
       {_num,token} = tupla_siguiente
-       #IO.inspect(token)
-       #Convert to operador 
+       #Se convierte token en operador
       op = get_operador_binario(token)
       {op, _algo}  = op
       next_term = parse_factor(rest)
@@ -209,7 +204,6 @@ def funcion_parser([tupla_siguiente | rest]) do
     next =  peek_tokens(rest) ##el que sigue 
     resultado = while_term(rest,factor, next)
     resultado
-    #IO.inspect(resultado, label: "pruebbababababasjjsasd")
   end 
 
   #Funciones de conjuncion
@@ -290,7 +284,6 @@ def funcion_parser([tupla_siguiente | rest]) do
     union  = %AST{node_name: siguiente, left_node: factor, right_node: next_factor}
     #union = "[OP : #{siguiente} FL :#{factor} Fr#{next_factor}]"
     union
-    #IO.inspect(union) #solo lo imprimos
   end
 
 end
