@@ -1,6 +1,6 @@
 # TalismanCompiler
 
-**TODO: Add description**
+**Proyecto compilador C en Elixir**
 El compilador del equipo Talisman conformado por sus integrantes Horacio Acosta Hernandez y Alan Ulises Sánchez Bautista, ambos desarrolladores por igual de este proyecto el cual cumple con los requisitos y objetivos planteados para la semana 3 del compilador marcado por la pagina:
 https://norasandler.com/2017/12/15/Write-a-Compiler-3.html
 Cumpliendo asi el poder reconocer programas en lenguje c donde se realizen operacion unarias y binarias. Siendo todo esto realizado mediante el comando mix.
