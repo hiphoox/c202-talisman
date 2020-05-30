@@ -9,7 +9,7 @@ Con esto se puede completar el requisito instruido por el profesor Norberto, cum
 
 ## Instalación
 
-1. Descarga el repositorio y entra a la carpeta raíz 
+1. Descarga el repositorio de https://github.com/hiphoox/c202-talisman y entra a la carpeta raíz 
 
 2. Abre una terminal y ejecuta la siguiente acción para crear el compilador:
 ```bash
