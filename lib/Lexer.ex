@@ -65,7 +65,9 @@ defmodule Lexer do
 
 	   "<" <> t_sobrantes ->
           {:menor_que, t_sobrantes}
-
+	
+	  ">" <> t_sobrantes ->
+          {:mayor_que, t_sobrantes}
            
 	_ -> 
           case Regex.run(~r/^\d+/, lista) do
