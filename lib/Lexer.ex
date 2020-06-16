@@ -69,6 +69,12 @@ defmodule Lexer do
 	  ">" <> t_sobrantes ->
           {:mayor_que, t_sobrantes}
            
+	   "==" <> t_sobrantes ->
+          {:igual_a, t_sobrantes}
+
+	    "||" <> t_sobrantes ->
+          {:o_logico, t_sobrantes}
+	  
 	_ -> 
           case Regex.run(~r/^\d+/, lista) do
             [value] -> {{:constante, String.to_integer(value)}, String.trim_leading(lista, value)}
