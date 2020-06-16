@@ -59,7 +59,11 @@ defmodule Lexer do
 	#Operandos 4 entrega
 	"<=" <> t_sobrantes ->
           {:menor_igual, t_sobrantes}
-        _ -> 
+	 
+	 ">=" <> t_sobrantes ->
+          {:mayor_igual, t_sobrantes}
+        
+	_ -> 
           case Regex.run(~r/^\d+/, lista) do
             [value] -> {{:constante, String.to_integer(value)}, String.trim_leading(lista, value)}
             _ -> {:error_token, " "}
