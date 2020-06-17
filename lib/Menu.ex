@@ -63,7 +63,7 @@ defmodule Menu do
     end
   end
 
-  ### FOrmato de archivo 
+  ### Formato de archivo 
 
   defp formato_file(file_name) do
     file_name = String.split(file_name, ".")
@@ -112,47 +112,30 @@ defmodule Menu do
   end 
 
 
-
-  #########
-
   defp compile_file_tk(file_path) do
-    IO.puts(" ********** Compilando... " <> file_path <> "\n")
-    ## assembly_path = String.replace_trailing(file_path, ".c", ".s")
     documento = File.read!(file_path)
     listasan = TalismanCompiler.depuracion(documento)
     IO.inspect(listasan, label: "Salida depuracion\n")
-
     listatokens = Lexer.lexer_principal(listasan, [])
     IO.inspect(listatokens, label: "\nSalida lexer (lista de tokens) \n")
   end
 
   defp compile_file_ast(file_path) do
-    IO.puts(" ********** Compilando... " <> file_path <> "\n")
-    ## assembly_path = String.replace_trailing(file_path, ".c", ".s")
     documento = File.read!(file_path)
-
     listasan = TalismanCompiler.depuracion(documento)
-    # IO.inspect(listasan, label: "Salida depuracion\n")
-
     listatokens = Lexer.lexer_principal(listasan, [])
-    # IO.inspect(listatokens, label: "\nSalida lexer (lista de tokens) \n")
-
     arbolast = Parser.programa_parser(listatokens)
     ImprimirArbol.imprimir(arbolast)
   end
 
   defp compile_file_gc(file_path) do
-    IO.puts(" ********** Compilando... " <> file_path <> "\n")
-    ## assembly_path = String.replace_trailing(file_path, ".c", ".s")
     documento = File.read!(file_path)
     listasan = TalismanCompiler.depuracion(documento)
-    # IO.inspect(listasan, label: "Salida depuracion\n")
     listatokens = Lexer.lexer_principal(listasan, [])
-    # IO.inspect(listatokens, label: "\nSalida lexer (lista de tokens) \n")
     arbolast = Parser.programa_parser(listatokens)
-    # ImprimirArbol.imprimir(arbolast)
     _generador_codigo = Generador_cod.codigo_generador(arbolast)
   end
+
 
   #### Mensaje de help
 
