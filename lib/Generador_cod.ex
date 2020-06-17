@@ -122,6 +122,15 @@ defmodule Generador_cod do
       setl %al
     """
   end
-
+  def entregar_codigo(:mayor_que, code_snippet, _) do
+    code_snippet<>
+    """
+      cmpl %eax, %ebx
+      movl $0, %eax
+      setg %al 
+    """
+  end
+  
+  
 
 end
