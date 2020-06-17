@@ -113,6 +113,15 @@ defmodule Generador_cod do
       idivq    %rbx
     """
   end
+ 
+   def entregar_codigo(:menor_que, code_snippet, _) do
+    code_snippet<>
+    """
+      cmpl %eax, %ebx
+      mov $0, %eax
+      setl %al
+    """
+  end
 
 
 end
