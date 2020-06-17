@@ -140,5 +140,14 @@ defmodule Generador_cod do
     """
   end
   
+  def entregar_codigo(:mayor_igual, code_snippet, _) do
+    code_snippet<>
+    """
+      cmpl %eax,%ebx
+      movl $0, %eax
+      setge %al
+    """
+  end
+  
 
 end
