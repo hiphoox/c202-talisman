@@ -149,5 +149,21 @@ defmodule Generador_cod do
     """
   end
   
+    def entregar_codigo(:diferente_de, code_snippet, _) do
+    code_snippet<>
+    """
+      cmpl %eax, %ebx
+      movl $0, %eax
+      setne %al
+    """
+  end
 
+  def entregar_codigo(:igual_a, code_snippet, _) do
+    code_snippet<>
+    """
+      cmp %rax,%rbx
+      mov $0, %rax
+      sete %al
+    """
+  end
 end
