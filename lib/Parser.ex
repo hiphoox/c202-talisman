@@ -105,25 +105,30 @@ def funcion_parser([tupla_siguiente | rest]) do
 
   
   #Parse expression
-  def  while_exp(rest, termino, next) when  next !=:logicalOr  do 
-    {termino, rest} #solo devolvemos la lista 
+
+  #Se modifica para utilizar logical_andexp
+
+ def  while_exp(rest, termino, next) when  next !=:o_logico  do 
+    {termino, rest} 
   end 
 
   def while_exp(rest,termino,_next) do 
     [tupla_siguiente | rest ] = rest 
     {_num , token}= tupla_siguiente
-    #Se convierte el token en operador
+    ##Convert to operador (lo sasamos)
     op  = get_operador_binario(token)
     {op, _algo} = op
-    next_term = parse_term(token)
+    next_term = logical_andexp(rest)
     {next_termino,rest} = next_term
     term = operador_Binario(op,termino,next_termino)
     next = peek_tokens(rest)
     while_exp(rest,term,next)
-  end
-  #Funcion encontrada , para ayudar a un correcto analisis de nuestras operaciones
+  end 
+
+#Funcion encontrada , para ayudar a un correcto analisis de nuestras operaciones
   def analizador_expresion(tokens) do
-    datos_term = parse_term(tokens)
+    #IO.inspect("ENtramos")
+    datos_term = logical_andexp(tokens)
     {termino,rest}  = datos_term  
     case datos_term do 
       {:error,mensaje} ->
@@ -133,8 +138,8 @@ def funcion_parser([tupla_siguiente | rest]) do
         resultado = while_exp(rest,termino, next)
         resultado
     end 
+    #IO.inspect(resultado, label: "RES analizador_expresion")
   end 
-
   
   #Parse factor
 
@@ -247,7 +252,6 @@ def funcion_parser([tupla_siguiente | rest]) do
   end
 
 
-#fUNCION CREADA PARA TERCER ENTREGA
     def get_operador_binario(siguiente_token) do 
     case siguiente_token do 
       :suma ->
@@ -285,5 +289,125 @@ def funcion_parser([tupla_siguiente | rest]) do
     #union = "[OP : #{siguiente} FL :#{factor} Fr#{next_factor}]"
     union
   end
+
+
+# Última entrega
+
+def  while_logical_andexp(rest, termino, next) when  next != :ampersand do 
+    {termino, rest} #solo devolvemos la lista 
+  end 
+
+  def while_logical_andexp(rest,termino,_next) do 
+      [tupla_siguiente | rest ] = rest ##sacamos el operador 
+      {_num , token}= tupla_siguiente
+      ##Convert to operador (lo sasamos)
+      op  = get_operador_binario(token)
+      {op, _algo}  = op
+      next_term = equality_exp(rest)
+      {next_termino,rest} = next_term
+      term = operador_Binario(op,termino,next_termino)
+      next = peek_tokens(rest)
+      while_logical_andexp(rest,term,next)
+  end 
+
+  def logical_andexp(tokens) do
+    #IO.inspect("ENtramos")
+    datos_term = equality_exp(tokens)
+    {termino,rest}  = datos_term  
+    next =  peek_tokens(rest) ##el que sigue 
+    case next do
+      {:error,mensaje} ->
+        {:error, mensaje}
+      _ ->
+        resultado = while_logical_andexp(rest,termino, next)
+        resultado
+    end
+    #IO.inspect(resultado, label: "RES analizador_expresion")
+  end 
+
+
+  ####
+  def  while_equality_exp(rest, termino, next) when  next != :diferente_de  and next != :igual_a do 
+    {termino, rest} #solo devolvemos la lista 
+  end 
+
+  def while_equality_exp(rest,termino,_next) do 
+      [tupla_siguiente | rest ] = rest ##sacamos el operador 
+      {_num , token}= tupla_siguiente
+      ##Convert to operador (lo sasamos)
+      op  = get_operador_binario(token)
+      {op, _algo}  = op
+      next_term = relational_exp(rest)
+      {next_termino,rest} = next_term
+      term = operador_Binario(op,termino,next_termino)
+      next = peek_tokens(rest)
+      while_equality_exp(rest,term,next)
+  end 
+
+  def equality_exp(tokens) do
+    #IO.inspect("ENtramos")
+    datos_term = relational_exp(tokens)
+    {termino,rest}  = datos_term  
+    next =  peek_tokens(rest) ##el que sigue 
+    resultado = while_equality_exp(rest,termino, next)
+    resultado
+    #IO.inspect(resultado, label: "RES analizador_expresion")
+  end 
+
+  ####
+  def  while_relational_exp(rest, termino, next) when  next != :menor_que  and next != :mayor_que  and next != :menor_igual and next != :mayor_igual do 
+    {termino, rest} #solo devolvemos la lista 
+  end 
+
+  def while_relational_exp(rest,termino,_next) do 
+      [tupla_siguiente | rest ] = rest ##sacamos el operador 
+      {_num , token}= tupla_siguiente
+      ##Convert to operador (lo sasamos)
+      op  = get_operador_binario(token)
+      {op, _algo}  = op
+      next_term = additive_exp(rest)
+      {next_termino,rest} = next_term
+      term = operador_Binario(op,termino,next_termino)
+      next = peek_tokens(rest)
+      while_relational_exp(rest,term,next)
+  end 
+
+  def relational_exp(tokens) do
+    #IO.inspect("ENtramos")
+    datos_term = additive_exp(tokens)
+    {termino,rest}  = datos_term  
+    next =  peek_tokens(rest) ##el que sigue 
+    resultado = while_relational_exp(rest,termino, next)
+    resultado
+    #IO.inspect(resultado, label: "RES analizador_expresion")
+  end 
+
+  ####
+  def  while_aditive_exp(rest, termino, next) when  next != :suma and next !=:negacion do 
+    {termino, rest} #solo devolvemos la lista 
+  end 
+
+  def while_aditive_exp(rest,termino,_next) do 
+      [tupla_siguiente | rest ] = rest ##sacamos el operador 
+      {_num , token}= tupla_siguiente
+      ##Convert to operador (lo sasamos)
+      op  = get_operador_binario(token)
+      {op, _algo}  = op
+      next_term = parse_term(rest)
+      {next_termino,rest} = next_term
+      term = operador_Binario(op,termino,next_termino)
+      next = peek_tokens(rest)
+      while_aditive_exp(rest,term,next)
+  end 
+
+  def additive_exp(tokens) do
+    #IO.inspect("ENtramos")
+    datos_term = parse_term(tokens)
+    {termino,rest}  = datos_term  
+    next =  peek_tokens(rest) ##el que sigue 
+    resultado = while_aditive_exp(rest,termino, next)
+    resultado
+    #IO.inspect(resultado, label: "RES analizador_expresion")
+  end 
 
 end

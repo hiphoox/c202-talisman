@@ -7,56 +7,63 @@ defmodule Lexer do
       lista
     end
   end
-
   def tokens({numRenglon,lista}) when lista != "" and lista != " " do
     lista = clearesp(lista)
     {token, ts} =
       case lista do
         "{" <> ts ->
           {:abre_llave, ts}
-
         ";" <> t_sobrantes ->
           {:puntoycoma, t_sobrantes}
-
         "int " <> ts ->
           {:pclave_int, ts}
-
         "main" <> ts ->
           {:pclave_main, ts}
-
         "(" <> ts ->
           {:abre_paren, ts}
         ")" <> ts ->
           {:cierra_paren, ts}
-
         "return " <> ts ->
           {:pclave_return, ts}
-
         "-" <> ts ->
           {:negacion, ts}
-
         "~" <> ts ->
           {:complemento, ts}
-	
+  
         "!=" <> ts ->
           {:diferente_de, ts}
-	 
-	      "+" <> ts ->
+   
+        "+" <> ts ->
           {:suma, ts}
-
         "*" <> ts ->
           {:multiplicacion, ts}
-
         "/" <> ts ->
           {:division, ts}
-
         "}" <> ts ->
           {:cierra_llave, ts}
-
         "!" <> ts ->
           {:negacion_logica, ts}
+  
+  #Operandos 4 entrega
+      "<=" <> t_sobrantes ->
+          {:menor_igual, t_sobrantes}
+   
+     ">=" <> t_sobrantes ->
+          {:mayor_igual, t_sobrantes}
+     "<" <> t_sobrantes ->
+          {:menor_que, t_sobrantes}
+  
+      ">" <> t_sobrantes ->
+          {:mayor_que, t_sobrantes}
+           
+     "==" <> t_sobrantes ->
+          {:igual_a, t_sobrantes}
+      "||" <> t_sobrantes ->
+          {:o_logico, t_sobrantes}
 
-        _ -> 
+    "&&" <> t_sobrantes ->
+          {:ampersand, t_sobrantes}
+    _ -> 
           case Regex.run(~r/^\d+/, lista) do
             [value] -> {{:constante, String.to_integer(value)}, String.trim_leading(lista, value)}
             _ -> {:error_token, " "}
@@ -67,18 +74,14 @@ defmodule Lexer do
     [{numRenglon,token} | ts]
     
   end
-
   def tokens(_lista) do
     []
   end
-
   def flatmap([{numRenglon,cadena}]) do
     Enum.flat_map({numRenglon,cadena}, &tokens/1)
   end
-
   def lexer_principal(lista_principal, lista_tokens) do
     len_temp = length(lista_principal)
-
     if len_temp > 0 do
       lista_aux = hd(lista_principal)
       lista_principal = List.delete_at(lista_principal, 0)
@@ -97,7 +100,6 @@ defmodule Lexer do
       end
     end
   end
-
   def errores (lista_tokens) do 
     if lista_tokens != [] do 
       [ini | fin] = lista_tokens 
@@ -110,7 +112,6 @@ defmodule Lexer do
       :true
     end
   end
-
   def agrupacion([{numRenglon,cadena}]) do
     # flat_map coloca todos los elementos en una sola lista
     Enum.flat_map({numRenglon,cadena}, &tokens/1)
