@@ -250,10 +250,10 @@ defmodule LexerTest do
     {2, :pclave_return},
     {2, :abre_paren},
     {2, {:constante, 1}},
-    {2, :o_logico},
+    {2, :logicalOr},
     {2, {:constante, 0}},
     {2, :cierra_paren},
-    {2, :ampersand},
+    {2, :logicalAnd},
     {2, {:constante, 0}},
     {2, :puntoycoma},
     {3, :cierra_llave}
@@ -450,7 +450,7 @@ defmodule LexerTest do
 #Semana 4
 
   test " Falso and", state do
-    expected_result = List.update_at(state[:tokens_add], 7, fn _ -> {2, :ampersand} end)
+    expected_result = List.update_at(state[:tokens_add], 7, fn _ -> {2, :logicalAnd} end)
     expected_result = List.update_at(expected_result, 8, fn _ -> {2, {:constante, 0}} end)
     assert Lexer.lexer_principal([[1, "int "], [1, "main()"], [1, "{"], [2, "return "], [2, "1"], [2, "&&"], [2, "0;"], [3, "}"]], []
       ) == expected_result
@@ -458,7 +458,7 @@ defmodule LexerTest do
 
   test " Verdadero and", state do
     expected_result = List.update_at(state[:tokens_subNeg], 6, fn _ -> {2, {:constante, 1}} end)
-    expected_result = List.update_at(expected_result, 7, fn _ -> {2, :ampersand} end)
+    expected_result = List.update_at(expected_result, 7, fn _ -> {2, :logicalAnd} end)
     expected_result = List.update_at(expected_result, 8, fn _ -> {2, :negacion} end)
     expected_result = List.update_at(expected_result, 9, fn _ -> {2, {:constante, 1}} end)
     assert Lexer.lexer_principal([[1, "int "], [1, "main()"], [1, "{"], [2, "return "], [2, "1"], [2, "&&"], [2, "-1;"], [3, "}"]], []
@@ -554,7 +554,7 @@ defmodule LexerTest do
 
   test " Falso or", state do
     expected_result = List.update_at(state[:tokens_add], 6, fn _ -> {2, {:constante, 0}} end)
-    expected_result = List.update_at(expected_result, 7, fn _ -> {2, :o_logico} end)
+    expected_result = List.update_at(expected_result, 7, fn _ -> {2, :logicalOr} end)
     expected_result = List.update_at(expected_result, 8, fn _ -> {2, {:constante, 0}} end)
     assert Lexer.lexer_principal([[1, "int "], [1, "main()"], [1, "{"], [2, "return "], [2, "0"], [2, "||"], [2, "0;"], [3, "}"]], []
       ) == expected_result
@@ -562,7 +562,7 @@ defmodule LexerTest do
 
   test " Verdadero or", state do
     expected_result = List.update_at(state[:tokens_add], 6, fn _ -> {2, {:constante, 1}} end)
-    expected_result = List.update_at(expected_result, 7, fn _ -> {2, :o_logico} end)
+    expected_result = List.update_at(expected_result, 7, fn _ -> {2, :logicalOr} end)
     expected_result = List.update_at(expected_result, 8, fn _ -> {2, {:constante, 0}} end)
     assert Lexer.lexer_principal([[1, "int "], [1, "main()"], [1, "{"], [2, "return "], [2, "1"], [2, "||"], [2, "0;"], [3, "}"]], []
       ) == expected_result
@@ -570,9 +570,9 @@ defmodule LexerTest do
 
   test " Precedencia semana 4", state do #97
     expected_result = List.update_at(state[:tokens_aso2], 6, fn _ -> {2, {:constante, 1}} end)
-    expected_result = List.update_at(expected_result, 7, fn _ -> {2, :o_logico} end)
+    expected_result = List.update_at(expected_result, 7, fn _ -> {2, :logicalOr} end)
     expected_result = List.update_at(expected_result, 8, fn _ -> {2, {:constante, 0}} end)
-    expected_result = List.update_at(expected_result, 9, fn _ -> {2, :ampersand} end)
+    expected_result = List.update_at(expected_result, 9, fn _ -> {2, :logicalAnd} end)
     expected_result = List.update_at(expected_result, 10, fn _ -> {2, {:constante, 2}} end)
     assert Lexer.lexer_principal([[1, "int "], [1, "main()"], [1, "{"], [2, "return "], [2, "1"], [2, "||"], [2, "0"], [2, "&&"], [2, "2;"], [3, "}"]], []
       ) == expected_result
@@ -596,7 +596,7 @@ defmodule LexerTest do
   test " Falta segundo operando semana 4", state do
     expected_result = state[:tokens_add] -- [{2, {:constante, 2}}]
     expected_result = List.update_at(expected_result, 6, fn _ -> {2, {:constante, 2}} end)
-    expected_result = List.update_at(expected_result, 7, fn _ -> {2, :ampersand} end)
+    expected_result = List.update_at(expected_result, 7, fn _ -> {2, :logicalAnd} end)
     expected_result = expected_result -- [{2, :puntoycoma}]
     assert Lexer.lexer_principal([[1, "int "], [1, "main()"], [1, "{"], [2, "return "], [2, "2"], [2, "&&"], [3, "}"]], []
       ) == expected_result
@@ -612,7 +612,7 @@ defmodule LexerTest do
   end
 
   test " Falta punto y coma semana 4", state do
-    expected_result = List.update_at(state[:tokens_add], 7, fn _ -> {2, :o_logico} end)
+    expected_result = List.update_at(state[:tokens_add], 7, fn _ -> {2, :logicalOr} end)
     expected_result = expected_result -- [{2, :puntoycoma}]
     assert Lexer.lexer_principal([[1, "int "], [1, "main()"], [1, "{"], [2, "return "], [2, "1"], [2, "||"], [2, "2"], [3, "}"]], []
       ) == expected_result

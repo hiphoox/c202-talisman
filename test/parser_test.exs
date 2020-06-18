@@ -659,7 +659,7 @@ defmodule ParserTest do
 		          right_node: nil,
 		          value: 1
 		        },
-		        node_name: :ampersand,
+		        node_name: :logicalAnd,
 		        right_node: %AST{
 		          left_node: nil,
 		          node_name: :constante,
@@ -693,7 +693,7 @@ defmodule ParserTest do
 		          right_node: nil,
 		          value: 1
 		        },
-		        node_name: :ampersand,
+		        node_name: :logicalAnd,
 		        right_node: %AST{
 		          left_node: %AST{
 		            left_node: nil,
