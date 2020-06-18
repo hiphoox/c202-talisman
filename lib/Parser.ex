@@ -108,7 +108,7 @@ def funcion_parser([tupla_siguiente | rest]) do
 
   #Se modifica para utilizar logical_andexp
 
- def  while_exp(rest, termino, next) when  next !=:o_logico  do 
+ def  while_exp(rest, termino, next) when  next !=:logicalOr  do 
     {termino, rest} 
   end 
 
@@ -261,8 +261,8 @@ def funcion_parser([tupla_siguiente | rest]) do
         {:multiplicacion,:ok}
       :division ->
         {:division,:ok}
-      :o_logico ->
-        {:o_logico,:ok}
+      :logicalOr ->
+        {:logicalOr,:ok}
       :menor_que ->
          {:menor_que,:ok}
       :mayor_que ->
@@ -275,8 +275,8 @@ def funcion_parser([tupla_siguiente | rest]) do
          {:diferente_de,:ok}
       :igual_a ->
          {:igual_a,:ok}
-      :ampersand->
-         {:ampersand,:ok}
+      :logicalAnd->
+         {:logicalAnd,:ok}
       _ ->
        {{:error, "Binario no valido"}, :mal}
     end 
@@ -293,7 +293,7 @@ def funcion_parser([tupla_siguiente | rest]) do
 
 # Última entrega
 
-  def  while_logical_andexp(rest, termino, next) when  next != :ampersand do 
+  def  while_logical_andexp(rest, termino, next) when  next != :logicalAnd do 
     {termino, rest} #solo devolvemos la lista 
   end 
 
