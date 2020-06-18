@@ -10,7 +10,7 @@ defmodule Parser do
         if rest == []  do
           %AST{node_name: :program, left_node: funcion_nodo}
         else
-          {:error, "Error, Error, error"}
+          {:error, "Error: Los operandos no funcionan"}
         end
     end
   end
@@ -39,11 +39,11 @@ def funcion_parser([tupla_siguiente | rest]) do
               analizador = analizador_gramatica(rest)
 
               case analizador do
-                {{:error, _mensaje_error}, _rest} -> ##CHECAR BIEN CUANDO SE DEFINAN LOS ERRORES
+                {{:error, _mensaje_error}, _rest} ->
                   # Tuvo que ser cambiado por las pruebas 
                 {:error, "Linea: #{num}. Error: la funcion no devuelve nada"}
 
-                {{:error, "Error: se esperaba ;"}} ->
+                {{:error, "Error: se esparaba ;"}} ->
                   {:error, "Linea: #{elem(tupla_siguiente,0)+1}. Error: Orden de operandos erroneos"}
                 
                 {:error, mensaje} ->
@@ -170,7 +170,7 @@ def funcion_parser([tupla_siguiente | rest]) do
 
         case valido do
           {tupla_mensaje, :mal} ->
-            ## Se regresa a parse_statement
+            # Se regresa a parse_statement
             {tupla_mensaje,rest} 
 
           {name_nodo, :ok} ->
@@ -251,7 +251,6 @@ def funcion_parser([tupla_siguiente | rest]) do
     end 
   end
 
-
     def get_operador_binario(siguiente_token) do 
     case siguiente_token do 
       :suma ->
@@ -262,8 +261,8 @@ def funcion_parser([tupla_siguiente | rest]) do
         {:multiplicacion,:ok}
       :division ->
         {:division,:ok}
-      :logicalOr ->
-        {:logicalOr,:ok}
+      :o_logico ->
+        {:o_logico,:ok}
       :menor_que ->
          {:menor_que,:ok}
       :mayor_que ->
@@ -276,11 +275,12 @@ def funcion_parser([tupla_siguiente | rest]) do
          {:diferente_de,:ok}
       :igual_a ->
          {:igual_a,:ok}
-      :logicalAnd->
-         {:logicalAnd,:ok}
+      :ampersand->
+         {:ampersand,:ok}
       _ ->
        {{:error, "Binario no valido"}, :mal}
     end 
+
   end
 
   def operador_Binario(siguiente,factor,next_factor) do 
@@ -293,7 +293,7 @@ def funcion_parser([tupla_siguiente | rest]) do
 
 # Última entrega
 
-def  while_logical_andexp(rest, termino, next) when  next != :ampersand do 
+  def  while_logical_andexp(rest, termino, next) when  next != :ampersand do 
     {termino, rest} #solo devolvemos la lista 
   end 
 
@@ -326,7 +326,6 @@ def  while_logical_andexp(rest, termino, next) when  next != :ampersand do
   end 
 
 
-  ####
   def  while_equality_exp(rest, termino, next) when  next != :diferente_de  and next != :igual_a do 
     {termino, rest} #solo devolvemos la lista 
   end 
@@ -354,7 +353,6 @@ def  while_logical_andexp(rest, termino, next) when  next != :ampersand do
     #IO.inspect(resultado, label: "RES analizador_expresion")
   end 
 
-  ####
   def  while_relational_exp(rest, termino, next) when  next != :menor_que  and next != :mayor_que  and next != :menor_igual and next != :mayor_igual do 
     {termino, rest} #solo devolvemos la lista 
   end 
@@ -362,7 +360,6 @@ def  while_logical_andexp(rest, termino, next) when  next != :ampersand do
   def while_relational_exp(rest,termino,_next) do 
       [tupla_siguiente | rest ] = rest ##sacamos el operador 
       {_num , token}= tupla_siguiente
-      ##Convert to operador (lo sasamos)
       op  = get_operador_binario(token)
       {op, _algo}  = op
       next_term = additive_exp(rest)
@@ -373,16 +370,13 @@ def  while_logical_andexp(rest, termino, next) when  next != :ampersand do
   end 
 
   def relational_exp(tokens) do
-    #IO.inspect("ENtramos")
     datos_term = additive_exp(tokens)
     {termino,rest}  = datos_term  
     next =  peek_tokens(rest) ##el que sigue 
     resultado = while_relational_exp(rest,termino, next)
     resultado
-    #IO.inspect(resultado, label: "RES analizador_expresion")
   end 
 
-  ####
   def  while_aditive_exp(rest, termino, next) when  next != :suma and next !=:negacion do 
     {termino, rest} #solo devolvemos la lista 
   end 
@@ -390,7 +384,6 @@ def  while_logical_andexp(rest, termino, next) when  next != :ampersand do
   def while_aditive_exp(rest,termino,_next) do 
       [tupla_siguiente | rest ] = rest ##sacamos el operador 
       {_num , token}= tupla_siguiente
-      ##Convert to operador (lo sasamos)
       op  = get_operador_binario(token)
       {op, _algo}  = op
       next_term = parse_term(rest)
@@ -401,13 +394,11 @@ def  while_logical_andexp(rest, termino, next) when  next != :ampersand do
   end 
 
   def additive_exp(tokens) do
-    #IO.inspect("ENtramos")
     datos_term = parse_term(tokens)
     {termino,rest}  = datos_term  
     next =  peek_tokens(rest) ##el que sigue 
     resultado = while_aditive_exp(rest,termino, next)
     resultado
-    #IO.inspect(resultado, label: "RES analizador_expresion")
   end 
 
 end
