@@ -59,7 +59,7 @@ defmodule Lexer do
      "==" <> t_sobrantes ->
           {:igual_a, t_sobrantes}
       "||" <> t_sobrantes ->
-          {:logicalOR, t_sobrantes}
+          {:logicalOr, t_sobrantes}
 
     "&&" <> t_sobrantes ->
           {:logicalAnd, t_sobrantes}
