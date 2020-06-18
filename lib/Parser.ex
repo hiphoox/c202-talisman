@@ -311,7 +311,6 @@ def funcion_parser([tupla_siguiente | rest]) do
   end 
 
   def logical_andexp(tokens) do
-    #IO.inspect("ENtramos")
     datos_term = equality_exp(tokens)
     {termino,rest}  = datos_term  
     next =  peek_tokens(rest) ##el que sigue 
@@ -322,7 +321,6 @@ def funcion_parser([tupla_siguiente | rest]) do
         resultado = while_logical_andexp(rest,termino, next)
         resultado
     end
-    #IO.inspect(resultado, label: "RES analizador_expresion")
   end 
 
 
@@ -344,13 +342,11 @@ def funcion_parser([tupla_siguiente | rest]) do
   end 
 
   def equality_exp(tokens) do
-    #IO.inspect("ENtramos")
     datos_term = relational_exp(tokens)
     {termino,rest}  = datos_term  
     next =  peek_tokens(rest) ##el que sigue 
     resultado = while_equality_exp(rest,termino, next)
     resultado
-    #IO.inspect(resultado, label: "RES analizador_expresion")
   end 
 
   def  while_relational_exp(rest, termino, next) when  next != :menor_que  and next != :mayor_que  and next != :menor_igual and next != :mayor_igual do 
@@ -400,5 +396,4 @@ def funcion_parser([tupla_siguiente | rest]) do
     resultado = while_aditive_exp(rest,termino, next)
     resultado
   end 
-
 end
